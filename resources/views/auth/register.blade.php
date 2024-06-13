@@ -2,11 +2,39 @@
     <form method="POST" action="{{ route('register') }}">
         @csrf
 
-        <!-- Name -->
+        <!-- Nombres -->
         <div>
-            <x-input-label for="name" :value="__('Name')" />
-            <x-text-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')" required autofocus autocomplete="name" />
-            <x-input-error :messages="$errors->get('name')" class="mt-2" />
+            <x-input-label for="nombres" :value="__('Nombres')" />
+            <x-text-input id="nombres" class="block mt-1 w-full" type="text" name="nombres" :value="old('nombres')" required autofocus autocomplete="nombres" />
+            <x-input-error :messages="$errors->get('nombres')" class="mt-2" />
+        </div>
+
+        <!-- Apellidos -->
+        <div class="mt-4">
+            <x-input-label for="apellidos" :value="__('Apellidos')" />
+            <x-text-input id="apellidos" class="block mt-1 w-full" type="text" name="apellidos" :value="old('apellidos')" required autofocus autocomplete="apellidos" />
+            <x-input-error :messages="$errors->get('apellidos')" class="mt-2" />
+        </div>
+
+        <!-- Dni -->
+        <div class="mt-4">
+            <x-input-label for="dni" :value="__('Dni')" />
+            <x-text-input id="dni" class="block mt-1 w-full" type="text" name="dni" :value="old('dni')" required autofocus autocomplete="dni" />
+            <x-input-error :messages="$errors->get('dni')" class="mt-2" />
+        </div>
+
+        <!-- Fecha Nacimiento -->
+        <div class="mt-4">
+            <x-input-label for="fechaNac" :value="__('Fecha Nacimiento')" />
+            <x-text-input id="fechaNac" class="block mt-1 w-full" type="text" name="fechaNac" :value="old('fechaNac')" required autofocus autocomplete="fechaNac" />
+            <x-input-error :messages="$errors->get('fechaNac')" class="mt-2" />
+        </div>
+
+        <!-- Telefono -->
+        <div class="mt-4">
+            <x-input-label for="telefono" :value="__('Telefono')" />
+            <x-text-input id="telefono" class="block mt-1 w-full" type="text" name="telefono" :value="old('telefono')" required autofocus autocomplete="telefono" />
+            <x-input-error :messages="$errors->get('telefono')" class="mt-2" />
         </div>
 
         <!-- Email Address -->
