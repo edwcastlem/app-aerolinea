@@ -23,7 +23,10 @@
 
     @include('layouts.aerolinea.header')
 
-    {{ $slot }}
+    <!-- Main -->
+    <main class="bg-gray-100">
+        {{ $slot }}
+    </main>
 
     @include('layouts.aerolinea.footer')
 

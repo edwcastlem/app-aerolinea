@@ -1,7 +1,5 @@
 <x-front-layout>
 
-<!-- Main -->
-<main class="bg-gray-100">
     <!-- Slider -->
     <section class="relative bg-cover bg-center"
         style="background-image: url('{{ asset('assets/img/fondo1.jpg') }}'); height: 100%;">
@@ -111,6 +109,5 @@
             </div>
         </div>
     </section>
-</main>
 
 </x-front-layout>

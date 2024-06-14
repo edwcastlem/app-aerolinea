@@ -28,7 +28,7 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
-        return redirect()->intended(route('front-correcto', absolute: false)); //se modifico aqui "dashboard"
+        return redirect()->intended(route('dashboard', absolute: false));
     }
 
     /**
@@ -42,6 +42,6 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerateToken();
 
-        return redirect('/front');
+        return redirect('/');
     }
 }
