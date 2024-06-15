@@ -31,7 +31,6 @@
     @include('layouts.aerolinea.footer')
 
     @stack('scripts')
-
 </body>
 
 </html>

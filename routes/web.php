@@ -21,7 +21,29 @@ Route::middleware('auth')->group(function () {
 
 Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
     //usuario autenticado
+    Route::get('/', function() {
+        return view('admin.index');
+    })->name('admin.dashboard');
 
+    Route::get('/vuelos', function() {
+        return view('admin.vuelos');
+    })->name('admin.vuelos');
+
+    Route::get('/aviones', function() {
+        return view('admin.aviones');
+    })->name('admin.aviones');
+
+    Route::get('/tripulacion', function() {
+        return view('admin.tripulacion');
+    })->name('admin.tripulacion');
+
+    Route::get('/reservas', function() {
+        return view('admin.index');
+    })->name('admin.reservas');
+
+    Route::get('/usuarios', function() {
+        return view('admin.usuarios.index');
+    })->name('admin.usuarios');
 });
 
 require __DIR__.'/auth.php';
