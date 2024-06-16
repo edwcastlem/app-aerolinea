@@ -24,6 +24,12 @@
         </div>
 
         <div>
+            <x-input-label for="apellidos" value="Apellidos" />
+            <x-text-input id="apellidos" name="apellidos" type="text" class="mt-1 block w-full" :value="old('apellidos', $user->apellidos)" required autofocus autocomplete="name" />
+            <x-input-error class="mt-2" :messages="$errors->get('apellidos')" />
+        </div>
+
+        <div>
             <x-input-label for="email" :value="__('Email')" />
             <x-text-input id="email" name="email" type="email" class="mt-1 block w-full" :value="old('email', $user->email)" required autocomplete="username" />
             <x-input-error class="mt-2" :messages="$errors->get('email')" />
@@ -39,7 +45,7 @@
                     </p>
 
                     @if (session('status') === 'verification-link-sent')
-                        <p class="mt-2 font-medium text-sm text-green-600">
+                        <p class="mt-2 font-medium text-sm text-steal-800">
                             {{ __('A new verification link has been sent to your email address.') }}
                         </p>
                     @endif

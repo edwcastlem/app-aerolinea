@@ -5,7 +5,7 @@
         <span>|</span>
         <a href="#" class="hover:underline">Privacidad</a>
         <span>|</span>
-        <a href="#" class="hover:underline">Ayuda</a>
+        <a href="{{ route('ayuda') }}" class="hover:underline">Ayuda</a>
     </div>
     <hr class="border-t-2 w-[100px] mx-auto border-gray-300 my-8">
     <div class="text-center mt-4">

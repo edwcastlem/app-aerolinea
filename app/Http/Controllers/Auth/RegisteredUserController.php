@@ -45,7 +45,7 @@ class RegisteredUserController extends Controller
             'dni' => $request->dni,
             'fechaNac' => $request->fechaNac,
             'telefono' => $request->telefono,
-            'idRol' => 1,
+            'idRol' => 2, //administrador
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);

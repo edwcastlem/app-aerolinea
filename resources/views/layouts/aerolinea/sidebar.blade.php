@@ -32,9 +32,9 @@
         ],
         [
             'name' => 'Usuarios',
-            'url' => route('admin.usuarios'),
+            'url' => route('admin.usuarios.index'),
             'icon' => 'fa-solid fa-user-group',
-            'active' => request()->routeIs('admin.usuarios')
+            'active' => request()->routeIs('admin.usuarios.index')
         ]
     ];
 @endphp
@@ -65,7 +65,7 @@
             @foreach ($links as $link)
                 <li>
                     <a href="{{ $link['url'] }}"
-                        class="flex items-center items-center p-2 rounded-lg hover:bg-gray-200 hover:text-gray-900 {{ $link['active'] ? 'bg-gray-200 text-gray-900' : 'text-white' }}">
+                        class="flex items-center p-2 rounded-lg hover:bg-gray-200 hover:text-gray-900 {{ $link['active'] ? 'bg-gray-200 text-gray-900' : 'text-white' }}">
                         <i class="{{ $link['icon'] }} text-lg size-8 pl-1"></i>
                         <span class="ms-3">{{ $link['name'] }}</span>
                     </a>

@@ -2,10 +2,16 @@
 
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\UsuarioController;
+
 
 Route::get('/', function (){
     return view('front.index');
 })->name("index");
+
+Route::get('/ayuda', function (){
+    return view('front.ayuda');
+})->name("ayuda");
 
 Route::get('/dashboard', function () {
     return view('front.dashboard');
@@ -19,7 +25,7 @@ Route::middleware('auth')->group(function () {
     
 });
 
-Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
+Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'isAdmin']], function () {
     //usuario autenticado
     Route::get('/', function() {
         return view('admin.index');
@@ -41,9 +47,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
         return view('admin.index');
     })->name('admin.reservas');
 
-    Route::get('/usuarios', function() {
-        return view('admin.usuarios.index');
-    })->name('admin.usuarios');
+    Route::resource('usuarios', UsuarioController::class, ["as"=>"admin"]);
 });
 
 require __DIR__.'/auth.php';
