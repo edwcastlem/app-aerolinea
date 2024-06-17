@@ -20,10 +20,10 @@
 
 <body class="font-sans antialiased">
 
-    @include('layouts.aerolinea.sidebar')
+    @include('layouts.admin.sidebar')
 
     <main class="p-4 sm:ml-64">
-        @include('layouts.aerolinea.header-admin', $linksBreadcrumb ?? ['linksBreadcrumb' => []])
+        @include('layouts.admin.header', $linksBreadcrumb ?? ['linksBreadcrumb' => []])
 
         {{ $slot }}
     </main>

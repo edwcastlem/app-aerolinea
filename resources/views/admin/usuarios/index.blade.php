@@ -16,6 +16,8 @@
 
         <!-- Listado de usuario -->
         <div class="relative overflow-x-auto">
+
+            <button type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Crear usuario</button>
             <table class="w-full text-sm text-left rtl:text-right text-gray-500">
                 <thead class="text-xs text-gray-700 uppercase bg-gray-50">
                     <tr>
@@ -71,6 +73,7 @@
                     @endforeach
                 </tbody>
             </table>
+            <div class="mt-4">{{ $users->links() }}</div>
         </div>
 
     </div>

@@ -21,14 +21,14 @@
 
 <body>
 
-    @include('layouts.aerolinea.header')
+    @include('layouts.front.header')
 
     <!-- Main -->
     <main class="bg-gray-100">
         {{ $slot }}
     </main>
 
-    @include('layouts.aerolinea.footer')
+    @include('layouts.front.footer')
 
     @stack('scripts')
 </body>

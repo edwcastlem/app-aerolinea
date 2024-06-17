@@ -58,7 +58,7 @@
     <div class="h-full px-3 py-8 overflow-y-auto bg-gray-50 dark:bg-gray-800">
         <hr class="w-full mx-auto mb-6 h-0.5 border-0 bg-gradient-to-r from-teal-800 via-gray-400 to-teal-800">
         <a href="#" class="flex items-center justify-center ps-2.5 mb-5">
-            <span class="self-center text-xl font-semibold whitespace-nowrap dark:text-white">Aerolíneas ACME</span>
+            <span class="self-center text-xl font-semibold whitespace-nowrap text-white">Aerolíneas ACME</span>
         </a>
         <hr class="w-full mx-auto my-6 h-0.5 border-0 bg-gradient-to-r from-teal-800 via-gray-400 to-teal-800">
         <ul class="space-y-2 font-medium">

@@ -12,7 +12,7 @@ class UsuarioController extends Controller
      */
     public function index()
     {
-        $users = User::all();
+        $users = User::paginate(5);
         return view('admin.usuarios.index', compact('users'));
     }
 
@@ -21,7 +21,7 @@ class UsuarioController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.usuarios.create');
     }
 
     /**
