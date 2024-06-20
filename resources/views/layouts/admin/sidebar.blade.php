@@ -32,9 +32,9 @@
         ],
         [
             'name' => 'Usuarios',
-            'url' => route('admin.usuarios.index'),
+            'url' => route('admin.usuario.index'),
             'icon' => 'fa-solid fa-user-group',
-            'active' => request()->routeIs('admin.usuarios.index')
+            'active' => request()->routeIs('admin.usuario.index')
         ]
     ];
 @endphp

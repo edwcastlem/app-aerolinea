@@ -76,15 +76,15 @@ class User extends Authenticatable
 		return $this->hasMany(Reserva::class, 'idUsuario');
 	}
 
-	// Mutator para convertir la fecha al guardar
-    public function setFechaNacAttribute($value)
-    {
-        $this->attributes['fechaNac'] = Carbon::createFromFormat('d/m/Y', $value)->format('Y-m-d');
-    }
+	// // Mutator para convertir la fecha al guardar
+    // public function setFechaNacAttribute($value)
+    // {
+    //     $this->attributes['fechaNac'] = Carbon::createFromFormat('d/m/Y', $value)->format('Y-m-d');
+    // }
 
-    // Accessor para mostrar la fecha en formato dd/mm/yyyy
-    public function getFechaNacAttribute($value)
-    {
-        return Carbon::parse($value)->format('d/m/Y');
-    }
+    // // Accessor para mostrar la fecha en formato dd/mm/yyyy
+    // public function getFechaNacAttribute($value)
+    // {
+    //     return Carbon::parse($value)->format('d/m/Y');
+    // }
 }

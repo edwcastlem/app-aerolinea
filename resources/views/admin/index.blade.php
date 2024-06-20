@@ -1,4 +1,5 @@
 <x-admin-layout>
+    <!-- Componente breadcrumb -->
     @php
         $linksBreadcrumb = [
             'Inicio' => route('admin.dashboard'),

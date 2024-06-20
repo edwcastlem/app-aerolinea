@@ -9,10 +9,6 @@ Route::get('/', function (){
     return view('front.index');
 })->name("index");
 
-Route::get('/ayuda', function (){
-    return view('front.ayuda');
-})->name("ayuda");
-
 Route::get('/dashboard', function () {
     return view('front.dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
@@ -21,7 +17,6 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-
     
 });
 
@@ -47,7 +42,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'isAdmin']], functio
         return view('admin.index');
     })->name('admin.reservas');
 
-    Route::resource('usuarios', UsuarioController::class, ["as"=>"admin"]);
+    Route::resource('usuario', UsuarioController::class, ["as"=>"admin"]);
 });
 
 require __DIR__.'/auth.php';

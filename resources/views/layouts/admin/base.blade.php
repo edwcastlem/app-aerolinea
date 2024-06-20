@@ -16,6 +16,8 @@
 
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/css/aerolinea.css', 'resources/js/app.js'])
+
+    @stack('css')
 </head>
 
 <body class="font-sans antialiased">
@@ -28,8 +30,8 @@
         {{ $slot }}
     </main>
 
-
     @stack('scripts')
+    
 </body>
 
 </html>

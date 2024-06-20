@@ -30,7 +30,7 @@
             <div class="mt-4">
                 <x-input-label for="fechaNac" :value="__('Fecha Nacimiento')" />
                 {{-- <x-text-input id="fechaNac" class="block mt-1 w-full" type="text" name="fechaNac" :value="old('fechaNac')" required autofocus autocomplete="fechaNac" /> --}}
-                <input type="text" id="fechaNac" name="fechaNac" placeholder="dd/mm/yyyy" class="placeholder-gray-300 border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm block mt-1 w-full"
+                <input type="date" id="fechaNac" name="fechaNac" class="placeholder-gray-300 border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm block mt-1 w-full"
                     required autofocus autocomplete="fechaNac" value="{{ old('fechaNac') }}">
                 <x-input-error :messages="$errors->get('fechaNac')" class="mt-2" />
             </div>
