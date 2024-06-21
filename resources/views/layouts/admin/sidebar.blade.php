@@ -20,9 +20,9 @@
         ],
         [
             'name' => 'Tripulación',
-            'url' => route('admin.dashboard'),
+            'url' => route('admin.tripulacion.index'),
             'icon' => 'fa-solid fa-users-gear',
-            'active' => request()->routeIs('admin.tripulacion')
+            'active' => request()->routeIs('admin.tripulacion.index')
         ],
         [
             'name' => 'Reservas',

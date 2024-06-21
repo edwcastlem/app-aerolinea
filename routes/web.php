@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UsuarioController;
+use App\Http\Controllers\TripulacionController;
 
 
 Route::get('/', function (){
@@ -34,15 +35,12 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'isAdmin']], functio
         return view('admin.aviones');
     })->name('admin.aviones');
 
-    Route::get('/tripulacion', function() {
-        return view('admin.tripulacion');
-    })->name('admin.tripulacion');
-
     Route::get('/reservas', function() {
         return view('admin.index');
     })->name('admin.reservas');
 
     Route::resource('usuario', UsuarioController::class, ["as"=>"admin"]);
+    Route::resource('tripulacion', TripulacionController::class, ["as"=>"admin"]);
 });
 
 require __DIR__.'/auth.php';

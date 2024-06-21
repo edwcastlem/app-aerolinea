@@ -16,17 +16,15 @@
         <!-- Listado de usuario -->
         <div class="relative overflow-x-auto">
 
-            <button id="openModal" x-data="" x-on:click.prevent="$dispatch('open-modal', 'crear-usuario')" class="bg-blue-500 text-white px-4 py-2 rounded-md">Abrir modal</button>
+            <button id="abrirModal" x-data="" x-on:click.prevent="$dispatch('open-modal', 'usuario')" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2">
+                Nuevo usuario
+            </button>
 
-            <!-- Modal para crear usuario -->
-            <x-modal name="crear-usuario">
-                <!-- El contenido del modal se cargará dinámicamente -->
+            <!-- Modal para crear/editar usuario -->
+            <x-modal name="usuario">
+                @include('admin.usuarios.popup')
             </x-modal>
 
-            <button type="button" onclick="window.location.href = '{{ route('admin.usuario.create') }}'" 
-            class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2">
-            Crear usuario
-            </button>
             <table id="tabla-usuarios" class="w-full text-sm text-left rtl:text-right text-gray-500 display responsive nowrap">
                 <thead class="text-xs text-gray-700 uppercase bg-gray-50">
                     <tr>
@@ -57,36 +55,7 @@
                     </tr>
                 </thead>
                 <tbody></tbody>
-                {{-- <tbody>
-                    @foreach ($users as $user)
-                        <tr class="bg-white border-b">
-                            <th scope="row"
-                                class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                                {{ $user->nombres }}
-                            </th>
-                            <td class="px-6 py-4">
-                                {{ $user->apellidos }}
-                            </td>
-                            <td class="px-6 py-4">
-                                {{ $user->email }}
-                            </td>
-                            <td class="px-6 py-4">
-                                {{ $user->dni }}
-                            </td>
-                            <td class="px-6 py-4">
-                                {{ $user->telefono }}
-                            </td>
-                            <td class="px-6 py-4">
-                                {{ $user->fechaNac }}
-                            </td>
-                            <td class="px-6 py-4">
-                                {{ $user->rol->descripcion }}
-                            </td>
-                        </tr>
-                    @endforeach
-                </tbody> --}}
             </table>
-            {{-- <div class="mt-4">{{ $users->links() }}</div> --}}
         </div>
 
     </div>
@@ -106,26 +75,58 @@
         
         <script>
 
-            // Controlar el modal
-            $(document).on('open-modal', function (event) {
-                if (event.detail === 'crear-usuario') {
-                    $.ajax({
-                        url: '{{ route("admin.usuario.create") }}',
-                        method: 'GET',
-                        success: function (data) {
-                            $('#modal-crear-usuario').html(data);
-                        },
-                        error: function (jqXHR, textStatus, errorThrown) {
-                            console.error('Error al cargar el contenido del modal:', textStatus, errorThrown);
-                        }
-                    });
-                }
-            });
+            // Cargar el modal con ajax
+            // $(document).on('open-modal', function (event) {
+            //     if (event.detail === 'usuario') {
+            //         $.ajax({
+            //             url: '{{ route("admin.usuario.create") }}',
+            //             method: 'GET',
+            //             success: function (data) {
+            //                 $('#modal-usuario').html(data);
+            //             },
+            //             error: function (jqXHR, textStatus, errorThrown) {
+            //                 console.error('Error al cargar el contenido del modal:', textStatus, errorThrown);
+            //             }
+            //         });
+            //     }
+            // });
 
+            // Registrar usuario (sin la clave xq se edita desde el perfil.)
             // Agrega el evento aunque el control no se haya cargado... (se usa para los modales)
-            $(document).on('click','#btnAceptar', function(event) {
+            $(document).on('submit','#form-registro', function(event) {
                 event.preventDefault();
-                alert("¡Se hizo clic en el botón!");
+
+                let url = "{{ route('admin.usuario.store') }}";
+                let metodo = 'POST';
+                let usuarioId = $('#id').val();
+                if (usuarioId) {
+                    url = "{{ route('admin.usuario.update', ':id') }}".replace(':id', id);
+                    metodo = 'PUT';
+                }
+
+                $.ajax({
+                    url: url,
+                    method: metodo,
+                    data: $(this).serialize(),
+                    success: function(response) {
+                        alert("Usuario creado con éxito!!");
+
+                        $('#btnClose').click();
+                        $('#tabla-usuarios').DataTable().ajax.reload(); //recarga el datatable
+                        $('#form-registro')[0].reset(); //limpiamos el formulario
+                    },
+                    error: function(response) {
+                        var errors = response.responseJSON.errors;
+                        $('#nombresError').text(errors.nombres ? errors.nombres[0] : '');
+                        $('#apellidosError').text(errors.apellidos ? errors.apellidos[0] : '');
+                        $('#emailError').text(errors.email ? errors.email[0] : '');
+                        $('#fechaNacError').text(errors.email ? errors.fechaNac[0] : '');
+                        $('#dniError').text(errors.email ? errors.dni[0] : '');
+                        $('#telefonoError').text(errors.email ? errors.telefono[0] : '');
+                        $('#passwordError').text(errors.password ? errors.password[0] : '');
+                    }
+                });
+
             });
 
 
@@ -158,18 +159,32 @@
                 },
                 responsive: true,
                 autoWidth: false,
+                //lengthMenu: [[10, 25, 50], [10, 25, 50]],
             });
+            $('[name=tabla-usuarios_length').addClass('form-select w-16 py-1 px-2 rounded-md border-gray-300 focus:outline-none focus:ring focus:ring-teal-600 focus:border-teal-500 sm:text-sm');
 
 
-            // Para los eventos del datatables
+            // Editar en datatables
             $('#tabla-usuarios tbody').on('click', 'a.editar', function(event) {
                 event.preventDefault(); // para que no se ejecute el click en en enlace
                 var data = $('#tabla-usuarios').DataTable().row($(this).parents('tr')).data(); // carga toda la fila del dataables
-                
 
+                $('#usuario_id').val(data.id);
                 
-                alert('Editando ' + data.nombres);
-                
+                // leemos los datos del dtatables
+                $('#nombres').val(data.nombres);
+                $('#apellidos').val(data.apellidos);
+                $('#email').val(data.email);
+                $('#dni').val(data.dni);
+                $('#fechaNac').val(data.fechaNac);
+                $('#telefono').val(data.telefono);
+                $('#password').val(data.password);
+
+                console.log(response.data);
+
+                $('#abrirModal').click();
+                $('#title-popup').text("Editar");
+
             });
 
             $('#tabla-usuarios tbody').on('click', 'a.eliminar', function(event) {

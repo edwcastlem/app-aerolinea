@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Validation\Rules;
+use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Hash;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Validator;
 
 use Illuminate\Support\Facades\DB;
 
@@ -61,7 +63,8 @@ class UsuarioController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
+        // creacion de usuario por ajax
+        $validator = Validator::make($request->all(), [
             'nombres' => ['required', 'string', 'max:45'],
             'apellidos' => ['required', 'string', 'max:45'],
             'dni' => ['required', 'string', 'max:8'],
@@ -73,7 +76,11 @@ class UsuarioController extends Controller
 
         $rol = ($request->rol == "admin") ? 2 : 1;
 
-        User::create([
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 422);
+        }
+
+        $usuario = User::create([
             'nombres' => $request->nombres,
             'apellidos' => $request->apellidos,
             'dni' => $request->dni,
@@ -84,8 +91,10 @@ class UsuarioController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
-        return redirect(route('admin.usuario.index', absolute: false));
-        //return view('admin.usuario.index');
+        return response()->json([
+            'success' => true,
+            'data' => $usuario
+        ]);
     }
 
     /**
@@ -111,19 +120,31 @@ class UsuarioController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, User $usuario)
     {
-        $request->validate([
+        $validator = Validator::make($request->all(), [
             'nombres' => ['required', 'string', 'max:45'],
             'apellidos' => ['required', 'string', 'max:45'],
             'dni' => ['required', 'string', 'max:8'],
             'fechaNac' => ['required', 'string', 'max:45'],
             'telefono' => ['required', 'string', 'max:15'],
-            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
+            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', Rule::unique(User::class)->ignore($request->user()->id)],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
 
+        //$rol = ($request->rol == "admin") ? 2 : 1;
+
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 422);
+        }
+
+        $usuario->update($request->all());
+
+        return response()->json([
+            'success' => true,
+            'data' => $usuario
+        ]);
     }
 
     /**
