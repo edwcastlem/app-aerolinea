@@ -70,109 +70,36 @@
                 $('#title-popup').text("Nuevo");
             });
 
-            // Inicializamos datatables
+            // Inicializamos datatables con los campos
             initDatatable('#tabla-tripulacion', '{{ route('admin.tripulacion.index') }}', [
                 { data: 'id', visible: false },
                 { data: 'nombres' },
                 { data: 'apellidos' },
                 { data: 'dni' },
                 { data: 'cargo' },
-            ], 'tabla-tripulacion_length');
+            ]);
 
-            // Registro
-            // Agrega el evento aunque el control no se haya cargado... (se usa para los modales)
-            $(document).on('submit','#form-registro', function(event) {
-                event.preventDefault();               
-
-                let url = "{{ route('admin.tripulacion.store') }}";
-                let metodo = 'POST';
-                let id = $('#idTripulacion').val();
-                if (id) {
-                    url = "{{ route('admin.tripulacion.update', ':id') }}".replace(':id', id);
-                    metodo = 'PUT';
-                }
-
-                $.ajax({
-                    url: url,
-                    method: metodo,
-                    data: $(this).serialize(),
-                    success: function(response) {
-                        let modo = ( metodo === 'PUT' ) ? "Actualizado" : "Registrado";
-
-                        //alert(modo + " con éxito!!");
-                        Swal.fire(modo, modo + " con éxito!!", 'success');
-
-                        console.log(response.data);
-
-                        $('#btnClose').click();
-                        $('#tabla-tripulacion').DataTable().ajax.reload(); //recarga el datatable
-                        
-                    },
-                    error: function(response) {
-                        var errors = response.responseJSON.errors;
-                        $('#nombresError').text(errors.nombres ? errors.nombres[0] : '');
-                        $('#apellidosError').text(errors.apellidos ? errors.apellidos[0] : '');
-                        $('#dniError').text(errors.dni ? errors.dni[0] : '');
-                        $('#cargoError').text(errors.cargo ? errors.cargo[0] : '');
-                    }
-                });
-
-            });            
-
-
-            // Editar en datatables
-            $('#tabla-tripulacion tbody').on('click', 'a.editar', function(event) {
-                event.preventDefault(); // para que no se ejecute el click en en enlace
-
-                var data = $('#tabla-tripulacion').DataTable().row($(this).parents('tr')).data(); // carga toda la fila del dataables
-
-                $('#idTripulacion').val(data.id); //cargamos el id en el campo oculto
-                
-                // leemos los datos del dtatables
-                $('#nombres').val(data.nombres);
-                $('#apellidos').val(data.apellidos);
-                $('#dni').val(data.dni);
-                $('#cargo').val(data.cargo);
-
-                //console.log(response.data);
-
-                $('#abrirModal').click();
-                $('#title-popup').text("Editar");
-
+            // Configuramos el editar/actualizar
+            crearEditar('#tabla-tripulacion', '{{ route('admin.tripulacion.store') }}', '{{ route('admin.tripulacion.update', ':id') }}', '#idTripulacion', (errors) => {
+                // asignacion de etiquetas de errores
+                $('#nombresError').text(errors.nombres ? errors.nombres[0] : '');
+                $('#apellidosError').text(errors.apellidos ? errors.apellidos[0] : '');
+                $('#dniError').text(errors.dni ? errors.dni[0] : '');
+                $('#cargoError').text(errors.cargo ? errors.cargo[0] : '');
             });
 
-            $('#tabla-tripulacion tbody').on('click', 'a.eliminar', function(event) {
-                event.preventDefault();
-                var data = $('#tabla-tripulacion').DataTable().row($(this).parents('tr')).data();
-
-                Swal.fire({
-                    title: '¿Estás seguro?',
-                    text: '¡No podrás revertir esto!',
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonText: 'Sí, eliminarlo',
-                    cancelButtonText: 'Cancelar'
-                }).then((result) => {
-                if (result.isConfirmed) {
-                    $.ajax({
-                        url: "{{ route('admin.tripulacion.destroy', ':id') }}".replace(':id', data.id),
-                        method: 'DELETE',
-                        headers: {
-                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                        },
-                        success: function (response) {
-                            Swal.fire('¡Eliminado!', 'Se eliminó el registro.', 'success');
-                            $('#tabla-tripulacion').DataTable().ajax.reload(); //recarga el datatable
-                        },
-                        error: function (xhr, status, error) {
-                            Swal.fire('Error', 'No se pudo eliminar el registro.', 'error');
-                        }
-                    });
-                }
-                });
-                            
+            // Configuramos el mostrar...
+            showEdit('#tabla-tripulacion', '#idTripulacion',(fila) => {
+                // llenado de los campos del formulario
+                $('#nombres').val(fila.nombres);
+                $('#apellidos').val(fila.apellidos);
+                $('#dni').val(fila.dni);
+                $('#cargo').val(fila.cargo);
             });
 
+            //Configuramos el eliminar
+            eliminar('#tabla-tripulacion', '{{ route('admin.tripulacion.destroy', ':id') }}', '{{ csrf_token() }}');
+            
         </script>
     @endpush
 </x-admin-layout>
