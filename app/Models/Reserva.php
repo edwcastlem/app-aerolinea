@@ -19,7 +19,7 @@ class Reserva extends Model
 		'total' => 'float',
 		'idPasajero' => 'int',
 		'idVuelo' => 'int',
-		'idUsuario' => 'int'
+		'idUsuario' => 'bigint'
 	];
 
 	protected $fillable = [
@@ -43,7 +43,7 @@ class Reserva extends Model
 
 	public function usuario()
 	{
-		return $this->belongsTo(Usuario::class, 'idUsuario');
+		return $this->belongsTo(User::class, 'id');
 	}
 
 	public function detallereservas()
