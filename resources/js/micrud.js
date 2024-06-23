@@ -7,7 +7,7 @@ export function initDatatable(nombreTabla, rutaAjax, campos)
         columns: campos.concat([
             { 
                 "data": null, 
-                "defaultContent": `<a href="#" class="editar mr-4"><i class="fa-solid fa-pen-to-square"></i></a><a href="#" class="eliminar mr-4"><i class="fa-solid fa-trash-can"></i></a>`
+                "defaultContent": `<a x-data="" x-on:click="$dispatch('modo-editar', true)" href="#" class="editar mr-4"><i class="fa-solid fa-pen-to-square"></i></a><a href="#" class="eliminar mr-4"><i class="fa-solid fa-trash-can"></i></a>`
             }
         ]),
         language: {
@@ -35,7 +35,8 @@ export function resetForm() {
     // Limpiamos el formulario y las etiquetas de error
     $('#form-registro')[0].reset();
     $('span[id$="Error"]').text('');
-    console.log('ya te limpie!!!');
+    $('input[id^="id"]').val(''); // selecciona el id (los q empiezan por id)
+    //console.log('Valor de id(resetForm): ' + $('#idTripulacion').val())
 }
 
 /**
@@ -59,6 +60,8 @@ export function crearEditar(nombreTabla, urlStore, urlUpdate, campoId, asignarEr
             metodo = 'PUT';
         }
 
+        console.log('Capturado id: ' + $('#idTripulacion').val());
+
         $.ajax({
             url: url,
             method: metodo,
@@ -69,14 +72,13 @@ export function crearEditar(nombreTabla, urlStore, urlUpdate, campoId, asignarEr
                 //alert(modo + " con éxito!!");
                 Swal.fire(modo, modo + " con éxito!!", 'success');
 
-                console.log(response.status);
-
                 $('#btnClose').click();
                 $(nombreTabla).DataTable().ajax.reload(); //recarga el datatable
-                
             },
             error: function(response) {
                 var errors = response.responseJSON.errors;
+                console.log("Hubo errores!!!!!");
+                console.log(errors);
                 asignarErrores(errors);
             }
         });
@@ -94,7 +96,7 @@ export function crearEditar(nombreTabla, urlStore, urlUpdate, campoId, asignarEr
 export function showEdit(nombreTabla, campoId, llenarCampos, tituloPopup = "Editar")
 {
     // Editar en datatables
-    $('#tabla-tripulacion tbody').on('click', 'a.editar', function(event) {
+    $(nombreTabla + ' tbody').on('click', 'a.editar', function(event) {
         event.preventDefault(); // para que no se ejecute el click en en enlace
 
         let fila = $(nombreTabla).DataTable().row($(this).parents('tr')).data(); // carga toda la fila del dataables
@@ -140,7 +142,7 @@ export function eliminar(nombreTabla, url, token_csrf)
                 },
                 success: function (response) {
                     Swal.fire('¡Eliminado!', 'Se eliminó el registro.', 'success');
-                    $('#tabla-tripulacion').DataTable().ajax.reload(); //recarga el datatable
+                    $(nombreTabla).DataTable().ajax.reload(); //recarga el datatable
                 },
                 error: function (xhr, status, error) {
                     Swal.fire('Error', 'No se pudo eliminar el registro.', 'error');

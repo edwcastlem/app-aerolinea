@@ -32,7 +32,7 @@ class UsuarioController extends Controller
                     'email' => $user->email,
                     'dni' => $user->dni,
                     'telefono' => $user->telefono,
-                    'fechaNac' => Carbon::parse($user->fechaNac)->format('d/m/Y'),
+                    'fechaNac' => $user->fechaNac,
                     'rol' => $user->rol->descripcion
                 ];
             });
@@ -126,10 +126,10 @@ class UsuarioController extends Controller
             'nombres' => ['required', 'string', 'max:45'],
             'apellidos' => ['required', 'string', 'max:45'],
             'dni' => ['required', 'string', 'max:8'],
-            'fechaNac' => ['required', 'string', 'max:45'],
+            'fechaNac' => ['required', 'string', 'max:10'],
             'telefono' => ['required', 'string', 'max:15'],
-            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', Rule::unique(User::class)->ignore($request->user()->id)],
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', Rule::unique(User::class)->ignore($usuario->id)],
+            //'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
 
@@ -139,7 +139,9 @@ class UsuarioController extends Controller
             return response()->json(['errors' => $validator->errors()], 422);
         }
 
-        $usuario->update($request->all());
+        // Actualizar el usuario con los datos validados
+        $usuario->fill($validator->validated());
+        $usuario->save();
 
         return response()->json([
             'success' => true,
@@ -150,8 +152,21 @@ class UsuarioController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(String $id)
     {
-        //
+        $user = User::find($id);
+
+        if (!$user) {
+            return response()->json([
+                'succes' => false
+            ], 500);
+        }
+
+        $user->delete();
+
+        return response()->json([
+            'success' => true
+        ], 200);
+        
     }
 }

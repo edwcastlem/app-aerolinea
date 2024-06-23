@@ -1,5 +1,5 @@
 <div class="p-6">
-    <button id="closeModal" class="absolute top-2 right-5 text-3xl text-gray-500 hover:text-gray-800" x-on:click="$dispatch('close')">&times;</button>
+    <button id="closeModal" class="absolute top-2 right-5 text-3xl text-gray-500 hover:text-gray-800" x-on:click="$dispatch('close', resetForm())">&times;</button>
     
     <h2 id="title-popup" class="text-2xl font-semibold text-center mb-6">Registro</h2>
     <form id="form-registro">
@@ -18,7 +18,7 @@
             </div>
             <div class="flex flex-col">
                 <label for="fechaNac" class="text-sm font-medium text-gray-700">Fecha de nacimiento</label>
-                <input type="date" id="fechaNac" name="fechaNac" class="mt-1 p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-teal-600">
+                <input type="text" id="fechaNac" name="fechaNac" class="mt-1 p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-teal-600">
                 <span class="text-sm text-red-600 mt-1" id="fechaNacError"></span>
             </div>
             <div class="flex flex-col">
@@ -36,19 +36,19 @@
                 <input type="email" id="email" name="email" class="mt-1 p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-teal-600">
                 <span class="text-sm text-red-600 mt-1" id="emailError"></span>
             </div>
-            <div class="flex flex-col">
+            <div id="pwd" class="flex flex-col">
                 <label for="password" class="text-sm font-medium text-gray-700">Contraseña</label>
                 <input type="password" id="password" name="password" class="mt-1 p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-teal-600">
                 <span class="text-sm text-red-600 mt-1" id="passwordError"></span>
             </div>
-            <div class="flex flex-col">
+            <div id="pwd_confirm" class="flex flex-col">
                 <label for="password_confirmation" class="text-sm font-medium text-gray-700">Vuelve a escribir tu contraseña</label>
                 <input type="password" id="password_confirmation" name="password_confirmation" class="mt-1 p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-teal-600">
             </div>
 
             <div class="mt-6 flex col-span-2 justify-end">
 
-                <x-secondary-button id="btnClose" x-on:click="$dispatch('close')">
+                <x-secondary-button id="btnClose" x-on:click="$dispatch('close', resetForm())">
                     Cancelar
                 </x-secondary-button>
         

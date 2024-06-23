@@ -16,7 +16,7 @@
         <!-- Listado de usuario -->
         <div class="relative overflow-x-auto">
 
-            <button id="abrirModal" x-data="" x-on:click.prevent="$dispatch('open-modal', 'usuario')" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2">
+            <button id="abrirModal" x-data="" x-on:click.prevent="$dispatch('open-modal', 'usuario'); $dispatch('modo-registrar')" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2">
                 Nuevo usuario
             </button>
 
@@ -28,6 +28,9 @@
             <table id="tabla-usuarios" class="w-full text-sm text-left rtl:text-right text-gray-500 display responsive nowrap">
                 <thead class="text-xs text-gray-700 uppercase bg-gray-50">
                     <tr>
+                        <th scope="col" class="px-6 py-3">
+                            Id
+                        </th>
                         <th scope="col" class="px-6 py-3">
                             Nombres
                         </th>
@@ -73,126 +76,75 @@
         <script src="https://cdn.datatables.net/2.0.8/js/dataTables.min.js"></script>
         {{-- <script src="https://cdn.datatables.net/2.0.8/js/dataTables.responsive.min.js"></script> --}}
         
-        <script>
+        <script type="module">
 
-            // Cargar el modal con ajax
-            // $(document).on('open-modal', function (event) {
-            //     if (event.detail === 'usuario') {
-            //         $.ajax({
-            //             url: '{{ route("admin.usuario.create") }}',
-            //             method: 'GET',
-            //             success: function (data) {
-            //                 $('#modal-usuario').html(data);
-            //             },
-            //             error: function (jqXHR, textStatus, errorThrown) {
-            //                 console.error('Error al cargar el contenido del modal:', textStatus, errorThrown);
-            //             }
-            //         });
-            //     }
-            // });
+            let editar = false;
 
-            // Registrar usuario (sin la clave xq se edita desde el perfil.)
-            // Agrega el evento aunque el control no se haya cargado... (se usa para los modales)
-            $(document).on('submit','#form-registro', function(event) {
-                event.preventDefault();
+            //capturamos el evento de alpine
+            $(document).on('modo-editar', function(event) {
+                editar = true;
+            });
 
-                let url = "{{ route('admin.usuario.store') }}";
-                let metodo = 'POST';
-                let usuarioId = $('#id').val();
-                if (usuarioId) {
-                    url = "{{ route('admin.usuario.update', ':id') }}".replace(':id', id);
-                    metodo = 'PUT';
+            $(document).on('modo-registrar', function(event) {
+                editar = false;
+            });
+
+            // Configuramos el componente para fecha flatpickr y lo asignamos a una variable para usarlo despues
+            let fechaNacComponent = flatpickr("#fechaNac", {
+                dateFormat: "d/m/Y"
+            });
+
+            $(document).on('open-modal', function (event) {
+                $('#title-popup').text("Nuevo");
+
+                if (editar) {
+                    $('#pwd').addClass('hidden');
+                    $('#pwd_confirm').addClass('hidden');
                 }
-
-                $.ajax({
-                    url: url,
-                    method: metodo,
-                    data: $(this).serialize(),
-                    success: function(response) {
-                        alert("Usuario creado con éxito!!");
-
-                        $('#btnClose').click();
-                        $('#tabla-usuarios').DataTable().ajax.reload(); //recarga el datatable
-                        $('#form-registro')[0].reset(); //limpiamos el formulario
-                    },
-                    error: function(response) {
-                        var errors = response.responseJSON.errors;
-                        $('#nombresError').text(errors.nombres ? errors.nombres[0] : '');
-                        $('#apellidosError').text(errors.apellidos ? errors.apellidos[0] : '');
-                        $('#emailError').text(errors.email ? errors.email[0] : '');
-                        $('#fechaNacError').text(errors.email ? errors.fechaNac[0] : '');
-                        $('#dniError').text(errors.email ? errors.dni[0] : '');
-                        $('#telefonoError').text(errors.email ? errors.telefono[0] : '');
-                        $('#passwordError').text(errors.password ? errors.password[0] : '');
-                    }
-                });
-
+                else {
+                    $('#pwd').removeClass('hidden');
+                    $('#pwd_confirm').removeClass('hidden');
+                }
             });
 
+            // Inicializamos datatables con los campos
+            initDatatable('#tabla-usuarios', '{{ route('admin.usuario.index') }}', [
+                { data: 'id', visible: false },
+                { data: 'nombres' },
+                { data: 'apellidos' },
+                { data: 'email' },
+                { data: 'dni' },
+                { data: 'telefono' },
+                { data: 'fechaNac'},
+                { data: 'rol' },
+            ]);
 
-            // Componente datatables
-            $('#tabla-usuarios').DataTable({
-                ajax: "{{ route('admin.usuario.index') }}",
-                columns: [
-                    { data: 'nombres' },
-                    { data: 'apellidos' },
-                    { data: 'email' },
-                    { data: 'dni' },
-                    { data: 'telefono' },
-                    { data: 'fechaNac' },
-                    { data: 'rol' },
-                    { 
-                        "data": null, 
-                        "defaultContent": `<a href="#" class="editar mr-4"><i class="fa-solid fa-pen-to-square"></i></a><a href="#" class="eliminar mr-4"><i class="fa-solid fa-trash-can"></i></a>`
-                    }
-                ],
-                language: {
-                    "emptyTable":     "No hay datos en la tabla!",
-                    "info":           "Mostrando _START_ to _END_ de _TOTAL_ registros",
-                    "infoEmpty":      "Mostrando 0 de 0 de 0 registros",
-                    "infoFiltered":   "(filtrando de _MAX_ total de registros)",
-                    "lengthMenu":     "Mostrar _MENU_ registros",
-                    "loadingRecords": "Cargando...",
-                    "processing":     "",
-                    "search":         "Buscar:",
-                    "zeroRecords":    "No hay registros encontrados",
-                },
-                responsive: true,
-                autoWidth: false,
-                //lengthMenu: [[10, 25, 50], [10, 25, 50]],
-            });
-            $('[name=tabla-usuarios_length').addClass('form-select w-16 py-1 px-2 rounded-md border-gray-300 focus:outline-none focus:ring focus:ring-teal-600 focus:border-teal-500 sm:text-sm');
-
-
-            // Editar en datatables
-            $('#tabla-usuarios tbody').on('click', 'a.editar', function(event) {
-                event.preventDefault(); // para que no se ejecute el click en en enlace
-                var data = $('#tabla-usuarios').DataTable().row($(this).parents('tr')).data(); // carga toda la fila del dataables
-
-                $('#usuario_id').val(data.id);
-                
-                // leemos los datos del dtatables
-                $('#nombres').val(data.nombres);
-                $('#apellidos').val(data.apellidos);
-                $('#email').val(data.email);
-                $('#dni').val(data.dni);
-                $('#fechaNac').val(data.fechaNac);
-                $('#telefono').val(data.telefono);
-                $('#password').val(data.password);
-
-                console.log(response.data);
-
-                $('#abrirModal').click();
-                $('#title-popup').text("Editar");
-
+            // Configuramos el editar/actualizar
+            crearEditar('#tabla-usuarios', '{{ route('admin.usuario.store') }}', '{{ route('admin.usuario.update', ':id') }}', '#id', (errors) => {
+                // asignacion de etiquetas de errores
+                $('#nombresError').text(errors.nombres ? errors.nombres[0] : '');
+                $('#apellidosError').text(errors.apellidos ? errors.apellidos[0] : '');
+                $('#fechaNacError').text(errors.fechaNac ? errors.fechaNac[0] : '');
+                $('#dniError').text(errors.dni ? errors.dni[0] : '');
+                $('#telefonoError').text(errors.telefono ? errors.telefono[0] : '');
+                $('#emailError').text(errors.email ? errors.email[0] : '');
+                $('#passwordError').text(errors.password ? errors.password[0] : '');
             });
 
-            $('#tabla-usuarios tbody').on('click', 'a.eliminar', function(event) {
-                event.preventDefault();
-                var data = $('#tabla-usuarios').DataTable().row($(this).parents('tr')).data();
-                alert('Eliminando ' + data.nombres);
-            
+            // Configuramos el mostrar...
+            showEdit('#tabla-usuarios', '#id', (fila) => {
+
+                // llenado de los campos del formulario
+                $('#nombres').val(fila.nombres);
+                $('#apellidos').val(fila.apellidos);
+                fechaNacComponent.setDate(fila.fechaNac);
+                $('#telefono').val(fila.telefono);
+                $('#dni').val(fila.dni);
+                $('#email').val(fila.email);
             });
+
+            //Configuramos el eliminar
+            eliminar('#tabla-usuarios', '{{ route('admin.usuario.destroy', ':id') }}', '{{ csrf_token() }}');
 
         </script>
     @endpush

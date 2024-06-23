@@ -1,3 +1,5 @@
+@import 'flatpickr/dist/flatpickr.min.css';
+
 /* Sidebar */
 #logo-sidebar div {
     @apply bg-teal-800;
