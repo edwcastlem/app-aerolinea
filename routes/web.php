@@ -1,14 +1,15 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AvionController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UsuarioController;
 use App\Http\Controllers\TripulacionController;
 
 
 Route::get('/', function (){
     return view('front.index');
-})->name("index");
+})->name("front.home");
 
 Route::get('/dashboard', function () {
     return view('front.dashboard');
@@ -31,16 +32,17 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'isAdmin']], functio
         return view('admin.vuelos');
     })->name('admin.vuelos');
 
-    Route::get('/aviones', function() {
-        return view('admin.aviones');
-    })->name('admin.aviones');
-
     Route::get('/reservas', function() {
         return view('admin.index');
     })->name('admin.reservas');
 
-    Route::resource('usuario', UsuarioController::class, ["as"=>"admin"]);
-    Route::resource('tripulacion', TripulacionController::class, ["as"=>"admin"]);
+
+    Route::name('admin.')->group( function() {
+        Route::apiResource('usuarios', UsuarioController::class);
+        Route::apiResource('tripulacion', TripulacionController::class);
+        Route::apiResource('aviones', AvionController::class);
+    });
+
 });
 
 require __DIR__.'/auth.php';

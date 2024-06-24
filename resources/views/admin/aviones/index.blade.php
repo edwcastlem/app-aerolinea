@@ -7,41 +7,38 @@
     @endphp
     @slot('linksBreadcrumb', $linksBreadcrumb)
 
-    <h1 class="text-[2rem] font-bold mb-4">Tripulación</h1>
+    <h1 class="text-[2rem] font-bold mb-4">Gestión de aeronaves</h1>
 
     <div class="block max-w-full p-6 bg-gray-50 border border-teal-800 rounded-lg shadow">
 
-        <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900">Listado</h5>
+        <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900">Aviones</h5>
 
         <!-- Listado  -->
         <div class="relative overflow-x-auto">
 
-            <button id="abrirModal" x-data="" x-on:click.prevent="$dispatch('open-modal', 'tripulacion'); $dispatch('modo-registrar')" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2">
-                Nuevo
+            <button id="abrirModal" x-data="" x-on:click.prevent="$dispatch('open-modal', 'avion'); $dispatch('modo-registrar')" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2">
+                Registrar avión
             </button>
 
             <!-- Modal para crear/editar  -->
-            <x-modal name="tripulacion">
-                @include('admin.tripulacion.popup')
+            <x-modal name="avion">
+                @include('admin.aviones.popup')
             </x-modal>
 
-            <table id="tabla-tripulacion" class="w-full text-sm text-left rtl:text-right text-gray-500 display responsive nowrap">
+            <table id="tabla-aviones" class="w-full text-sm text-left rtl:text-right text-gray-500 display responsive nowrap">
                 <thead class="text-xs text-gray-700 uppercase bg-gray-50">
                     <tr>
                         <th scope="col" class="px-6 py-3">
                             Id
                         </th>
                         <th scope="col" class="px-6 py-3">
-                            Nombres
+                            Modelo
                         </th>
                         <th scope="col" class="px-6 py-3">
-                            Apellidos
+                            Nro de Registro
                         </th>
                         <th scope="col" class="px-6 py-3">
-                            Dni
-                        </th>
-                        <th scope="col" class="px-6 py-3">
-                            Cargo
+                            Capacidad
                         </th>
                         <th scope="col" class="px-6 py-3">
                             Opciones
@@ -79,45 +76,40 @@
             //capturamos el evento de alpine
             $(document).on('modo-editar', function(event) {
                 editar = true;
-                //console.log('Capturado diste click en editar - id: ' + $('#idTripulacion').val());
             });
 
             $(document).on('modo-registrar', function(event) {
                 editar = false;
-                //console.log('Capturado diste click en Nuevo - id: ' + $('#idTripulación').val());
             });
 
 
 
             // Inicializamos datatables con los campos
-            initDatatable('#tabla-tripulacion', '{{ route('admin.tripulacion.index') }}', [
+            initDatatable('#tabla-aviones', '{{ route('admin.aviones.index') }}', [
                 { data: 'id', visible: false },
-                { data: 'nombres' },
-                { data: 'apellidos' },
-                { data: 'dni' },
-                { data: 'cargo' },
+                { data: 'modelo' },
+                { data: 'nroRegistro' },
+                { data: 'capacidad' },
             ]);
 
             // Configuramos el editar/actualizar
-            crearEditar('#tabla-tripulacion', '{{ route('admin.tripulacion.store') }}', '{{ route('admin.tripulacion.update', ':id') }}', '#idTripulacion', (errors) => {
+            crearEditar('#tabla-aviones', '{{ route('admin.aviones.store') }}', '{{ route('admin.aviones.update', ':id') }}', '#idAvion', (errors) => {
                 // asignacion de etiquetas de errores
-                $('#nombresError').text(errors.nombres ? errors.nombres[0] : '');
-                $('#apellidosError').text(errors.apellidos ? errors.apellidos[0] : '');
-                $('#dniError').text(errors.dni ? errors.dni[0] : '');
-                $('#cargoError').text(errors.cargo ? errors.cargo[0] : '');
+                $('#modeloError').text(errors.modelo ? errors.modelo[0] : '');
+                $('#nroRegistroError').text(errors.nroRegistro ? errors.nroRegistro[0] : '');
+                $('#capacidadError').text(errors.capacidad ? errors.capacidad[0] : '');
             });
 
             // Configuramos el mostrar...
-            showEdit('#tabla-tripulacion', '#idTripulacion',(fila) => {
+            showEdit('#tabla-aviones', '#idAvion',(fila) => {
                 // llenado de los campos del formulario
-                $('#nombres').val(fila.nombres);
-                $('#apellidos').val(fila.apellidos);
-                $('#dni').val(fila.dni);
-                $('#cargo').val(fila.cargo);
+                $('#modelo').val(fila.modelo);
+                $('#nroRegistro').val(fila.nroRegistro);
+                $('#capacidad').val(fila.capacidad);
             });
 
             //Configuramos el eliminar
-            eliminar('#tabla-tripulacion', '{{ route('admin.tripulacion.destroy', ':id') }}', '{{ csrf_token() }}');
+            eliminar('#tabla-aviones', '{{ route('admin.aviones.destroy', ':id') }}', '{{ csrf_token() }}');
             
         </script>
     @endpush

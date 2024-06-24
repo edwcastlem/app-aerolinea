@@ -14,7 +14,7 @@
         ],
         [
             'name' => 'Gestión de aeronaves',
-            'url' => route('admin.dashboard'),
+            'url' => route('admin.aviones.index'),
             'icon' => 'fa-solid fa-plane-circle-check',
             'active' => request()->routeIs('admin.aviones')
         ],
@@ -32,9 +32,9 @@
         ],
         [
             'name' => 'Usuarios',
-            'url' => route('admin.usuario.index'),
+            'url' => route('admin.usuarios.index'),
             'icon' => 'fa-solid fa-user-group',
-            'active' => request()->routeIs('admin.usuario.index')
+            'active' => request()->routeIs('admin.usuarios.index')
         ]
     ];
 @endphp

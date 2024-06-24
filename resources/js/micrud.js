@@ -7,7 +7,7 @@ export function initDatatable(nombreTabla, rutaAjax, campos)
         columns: campos.concat([
             { 
                 "data": null, 
-                "defaultContent": `<a x-data="" x-on:click="$dispatch('modo-editar', true)" href="#" class="editar mr-4"><i class="fa-solid fa-pen-to-square"></i></a><a href="#" class="eliminar mr-4"><i class="fa-solid fa-trash-can"></i></a>`
+                "defaultContent": `<a x-data="" x-on:click="$dispatch('modo-editar', true)" href="#" class="editar mr-4"><i class="fa-solid fa-pen-to-square"></i></a><a href="#" class="eliminar mr-4"><i class="fa-solid fa-trash-can"></i></a><a href="#" class="asientos mr-4"><i class="fa-solid fa-couch"></i></a>`
             }
         ]),
         language: {
@@ -60,6 +60,9 @@ export function crearEditar(nombreTabla, urlStore, urlUpdate, campoId, asignarEr
             metodo = 'PUT';
         }
 
+        let modo = ( metodo === 'PUT' ) ? "actualizado" : "registrado";
+        let title = modo.replace('do', 'r');
+
         console.log('Capturado id: ' + $('#idTripulacion').val());
 
         $.ajax({
@@ -67,18 +70,14 @@ export function crearEditar(nombreTabla, urlStore, urlUpdate, campoId, asignarEr
             method: metodo,
             data: $(this).serialize(), //  todo lo que tiene asignado el atributo name en el form
             success: function(response) {
-                let modo = ( metodo === 'PUT' ) ? "Actualizado" : "Registrado";
-
-                //alert(modo + " con éxito!!");
-                Swal.fire(modo, modo + " con éxito!!", 'success');
+                Swal.fire(title.toUpperCase(), modo + " con éxito!!", 'success');
 
                 $('#btnClose').click();
                 $(nombreTabla).DataTable().ajax.reload(); //recarga el datatable
             },
             error: function(response) {
                 var errors = response.responseJSON.errors;
-                console.log("Hubo errores!!!!!");
-                console.log(errors);
+                Swal.fire(title.toUpperCase(), "No se pudo :modo correctamente!!!".replace(':modo', title), 'error');
                 asignarErrores(errors);
             }
         });

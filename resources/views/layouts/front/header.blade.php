@@ -1,7 +1,7 @@
 <!-- Header -->
 <header class="bg-white shadow-md">
     <div class="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8 flex justify-between items-center">
-        <a href="{{ route('index') }}"><h1 class="text-3xl font-bold text-gray-900">ACME</h1></a>
+        <a href="{{ route('front.home') }}"><h1 class="text-3xl font-bold text-gray-900">ACME</h1></a>
 
         <div class="grid grid-cols-2">
             @if(Auth::user())

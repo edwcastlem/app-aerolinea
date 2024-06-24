@@ -13,9 +13,9 @@ class TripulacionController extends Controller
      */
     public function index(Request $request)
     {
-        $tripulaciones = Tripulacion::all();
-
         if ($request->ajax()) {
+
+            $tripulaciones = Tripulacion::all();
 
             // Seleccionar los campos deseados
             $tripulacionDTO = $tripulaciones->map(function($tripulaciones) {
@@ -31,15 +31,7 @@ class TripulacionController extends Controller
             return response()->json(['data' => $tripulacionDTO]);
         }
 
-        return view('admin.tripulacion.index', compact('tripulaciones'));
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+        return view('admin.tripulacion.index');
     }
 
     /**
@@ -59,12 +51,7 @@ class TripulacionController extends Controller
             return response()->json(['errors' => $validator->errors()], 422);
         }
 
-        $tripulacion = Tripulacion::create([
-            'nombres' => $request->nombres,
-            'apellidos' => $request->apellidos,
-            'dni' => $request->dni,
-            'cargo' => $request->cargo,
-        ]);
+        $tripulacion = Tripulacion::create($request->all());
 
         return response()->json([
             'success' => true,
@@ -76,14 +63,6 @@ class TripulacionController extends Controller
      * Display the specified resource.
      */
     public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
     {
         //
     }
@@ -121,6 +100,6 @@ class TripulacionController extends Controller
         $tripulacion->delete();
         return response()->json([
             'success' => true
-        ], 200);
+        ]);
     }
 }

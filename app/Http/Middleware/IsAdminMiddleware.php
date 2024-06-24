@@ -21,7 +21,7 @@ class IsAdminMiddleware
 
         if ($user->rol->descripcion != 'Administrador' )
         {
-            return redirect()->intended(route('index', absolute: false));
+            return redirect()->intended(route('front.home', absolute: false));
         }
 
         return $next($request);

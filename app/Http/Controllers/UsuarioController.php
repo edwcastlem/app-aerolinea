@@ -19,9 +19,8 @@ class UsuarioController extends Controller
      */
     public function index(Request $request)
     {
-        $users = User::all();
-
         if ($request->ajax()) {
+            $users = User::all();
 
             // Seleccionar los campos deseados
             $usuariosDTO = $users->map(function($user) {
@@ -40,7 +39,7 @@ class UsuarioController extends Controller
             return response()->json(['data' => $usuariosDTO]);
         }
 
-        return view('admin.usuarios.index', compact('users'));
+        return view('admin.usuarios.index');
     }
 
     /**

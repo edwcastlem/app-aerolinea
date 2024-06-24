@@ -2,7 +2,7 @@
     @php
         $linksBreadcrumb = [
             'Inicio' => route('admin.dashboard'),
-            'Usuarios' => route('admin.usuario.index'),
+            'Usuarios' => route('admin.usuarios.index'),
         ];
     @endphp
     @slot('linksBreadcrumb', $linksBreadcrumb)
@@ -108,7 +108,7 @@
             });
 
             // Inicializamos datatables con los campos
-            initDatatable('#tabla-usuarios', '{{ route('admin.usuario.index') }}', [
+            initDatatable('#tabla-usuarios', '{{ route('admin.usuarios.index') }}', [
                 { data: 'id', visible: false },
                 { data: 'nombres' },
                 { data: 'apellidos' },
@@ -120,7 +120,7 @@
             ]);
 
             // Configuramos el editar/actualizar
-            crearEditar('#tabla-usuarios', '{{ route('admin.usuario.store') }}', '{{ route('admin.usuario.update', ':id') }}', '#id', (errors) => {
+            crearEditar('#tabla-usuarios', '{{ route('admin.usuarios.store') }}', '{{ route('admin.usuarios.update', ':id') }}', '#id', (errors) => {
                 // asignacion de etiquetas de errores
                 $('#nombresError').text(errors.nombres ? errors.nombres[0] : '');
                 $('#apellidosError').text(errors.apellidos ? errors.apellidos[0] : '');
@@ -144,7 +144,7 @@
             });
 
             //Configuramos el eliminar
-            eliminar('#tabla-usuarios', '{{ route('admin.usuario.destroy', ':id') }}', '{{ csrf_token() }}');
+            eliminar('#tabla-usuarios', '{{ route('admin.usuarios.destroy', ':id') }}', '{{ csrf_token() }}');
 
         </script>
     @endpush
