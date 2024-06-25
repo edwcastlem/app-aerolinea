@@ -36,6 +36,14 @@
                 <input type="email" id="email" name="email" class="mt-1 p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-teal-600">
                 <span class="text-sm text-red-600 mt-1" id="emailError"></span>
             </div>
+
+            <!-- Select -->
+            <div class="flex flex-col">
+                <label for="idRol">Rol</label>
+                <select name="idRol" id="idRol">
+                </select>
+            </div>
+            
             <div id="pwd" class="flex flex-col">
                 <label for="password" class="text-sm font-medium text-gray-700">Contraseña</label>
                 <input type="password" id="password" name="password" class="mt-1 p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-teal-600">

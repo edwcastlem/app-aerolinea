@@ -17,6 +17,7 @@ class Vuelo extends Model
 	protected $casts = [
 		'fechaSalida' => 'datetime',
 		'fechaLlegada' => 'datetime',
+		'precio' => 'float',
 		'idEstadoVuelo' => 'int',
 		'idAvion' => 'int'
 	];
@@ -27,13 +28,14 @@ class Vuelo extends Model
 		'destino',
 		'fechaSalida',
 		'fechaLlegada',
+		'precio',
 		'terminal',
 		'puerta',
 		'idEstadoVuelo',
 		'idAvion'
 	];
 
-	public function estadovuelo()
+	public function estadoVuelo()
 	{
 		return $this->belongsTo(Estadovuelo::class, 'idEstadoVuelo');
 	}

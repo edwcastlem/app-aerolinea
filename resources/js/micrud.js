@@ -1,33 +1,42 @@
 // Componente datatables
 
-export function initDatatable(nombreTabla, rutaAjax, campos)
-{
+export function initDatatable(nombreTabla, rutaAjax, campos, botonesExtras = false, opcionesColumnas = []) {
     $(nombreTabla).DataTable({
         ajax: rutaAjax,
         columns: campos.concat([
-            { 
-                "data": null, 
-                "defaultContent": `<a x-data="" x-on:click="$dispatch('modo-editar', true)" href="#" class="editar mr-4"><i class="fa-solid fa-pen-to-square"></i></a><a href="#" class="eliminar mr-4"><i class="fa-solid fa-trash-can"></i></a><a href="#" class="asientos mr-4"><i class="fa-solid fa-couch"></i></a>`
+            {
+                data: null,
+                defaultContent: `
+                    <div x-data="" class="flex justify-center">
+                        <a x-on:click="$dispatch('modo-editar'); $dispatch('open-modal', 'popup')" href="#" class="editar mr-4">
+                            <i class="fa-solid fa-pen-to-square"></i>
+                        </a>
+                        <a href="#" class="eliminar mr-4">
+                            <i class="fa-solid fa-trash-can"></i>
+                        </a>
+                        ${botonesExtras ? botonesExtras : ''}
+                    </div>
+                `
             }
         ]),
+        columnDefs: opcionesColumnas,
         language: {
-            "emptyTable":     "No hay datos en la tabla!",
-            "info":           "Mostrando _START_ to _END_ de _TOTAL_ registros",
-            "infoEmpty":      "Mostrando 0 de 0 de 0 registros",
-            "infoFiltered":   "(filtrando de _MAX_ total de registros)",
-            "lengthMenu":     "Mostrar _MENU_ registros",
-            "loadingRecords": "Cargando...",
-            "processing":     "",
-            "search":         "Buscar:",
-            "zeroRecords":    "No hay registros encontrados",
+            emptyTable: "No hay datos en la tabla!",
+            info: "Mostrando _START_ to _END_ de _TOTAL_ registros",
+            infoEmpty: "Mostrando 0 de 0 de 0 registros",
+            infoFiltered: "(filtrando de _MAX_ total de registros)",
+            lengthMenu: "Mostrar _MENU_ registros",
+            loadingRecords: "Cargando...",
+            processing: "",
+            search: "Buscar:",
+            zeroRecords: "No hay registros encontrados"
         },
         responsive: true,
-        autoWidth: false,
-        //lengthMenu: [[10, 25, 50], [10, 25, 50]],
+        autoWidth: false
     });
-    
+
     $('[name=' + nombreTabla.replace('#', '') + '_length')
-    .addClass('form-select w-16 py-1 px-2 rounded-md border-gray-300 focus:outline-none focus:ring focus:ring-teal-600 focus:border-teal-500 sm:text-sm');
+        .addClass('form-select w-16 py-1 px-2 rounded-md border-gray-300 focus:outline-none focus:ring focus:ring-teal-600 focus:border-teal-500 sm:text-sm');
 }
 
 // Funcion que se llama automaticamente al cerrar un modal
@@ -36,7 +45,6 @@ export function resetForm() {
     $('#form-registro')[0].reset();
     $('span[id$="Error"]').text('');
     $('input[id^="id"]').val(''); // selecciona el id (los q empiezan por id)
-    //console.log('Valor de id(resetForm): ' + $('#idTripulacion').val())
 }
 
 /**
@@ -62,8 +70,6 @@ export function crearEditar(nombreTabla, urlStore, urlUpdate, campoId, asignarEr
 
         let modo = ( metodo === 'PUT' ) ? "actualizado" : "registrado";
         let title = modo.replace('do', 'r');
-
-        console.log('Capturado id: ' + $('#idTripulacion').val());
 
         $.ajax({
             url: url,
@@ -100,6 +106,8 @@ export function showEdit(nombreTabla, campoId, llenarCampos, tituloPopup = "Edit
 
         let fila = $(nombreTabla).DataTable().row($(this).parents('tr')).data(); // carga toda la fila del dataables
 
+        console.log("(ShowEdit) Id vuelo: " + fila.id);
+
         $(campoId).val(fila.id); //cargamos el id en el campo oculto
         
         // leemos los datos del dtatables
@@ -107,7 +115,6 @@ export function showEdit(nombreTabla, campoId, llenarCampos, tituloPopup = "Edit
 
         //console.log(response.data);
 
-        $('#abrirModal').click();
         $('#title-popup').text(tituloPopup);
     });
 }
@@ -147,7 +154,56 @@ export function eliminar(nombreTabla, url, token_csrf)
                     Swal.fire('Error', 'No se pudo eliminar el registro.', 'error');
                 }
             });
+            console.log("ID enviado: " + data.id);
         }
+        });
+    });
+}
+
+/***
+ *  idSelect: Debe ser un selector para el id
+ *  ruta: la ruta a donde se hara la consulta (usar route de laravel) 
+ *  Debe ser una ruta especial que devuelva un data con clave - valor
+ **/
+// export function cargarSelect(idSelect, ruta)
+// {
+//     let select = $(idSelect)[0];
+//     //let url = selectAvion.getAttribute('data-url');
+    
+//     $.ajax({
+//         url: ruta,
+//         method: 'GET',
+//         success: function (response) {
+//             select.innerHTML = '<option value="">Seleccionar</option';
+//             for (let key in response.data) {
+//                 select.innerHTML += `<option value="${ key }">${ response.data[key] }</option>`;
+//             }
+//         },
+//         error: function (xhr, status, error) {
+//             console.log(error);
+//         }
+//     });
+// }
+
+
+export function cargarSelect(idSelect, ruta) {
+    let select = $(idSelect)[0];
+    
+    return new Promise((resolve, reject) => {
+        $.ajax({
+            url: ruta,
+            method: 'GET',
+            success: function (response) {
+                select.innerHTML = '<option value="">Seleccionar</option>';
+                for (let key in response.data) {
+                    select.innerHTML += `<option value="${key}">${response.data[key]}</option>`;
+                }
+                resolve(); // Resuelve la promesa cuando el AJAX se completa
+            },
+            error: function (xhr, status, error) {
+                console.log(error);
+                reject(error); // Rechaza la promesa en caso de error
+            }
         });
     });
 }

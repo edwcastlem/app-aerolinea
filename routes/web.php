@@ -5,6 +5,10 @@ use App\Http\Controllers\AvionController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UsuarioController;
 use App\Http\Controllers\TripulacionController;
+use App\Http\Controllers\VueloController;
+use App\Http\Controllers\ReservaController;
+use App\Http\Controllers\EstadoVueloController;
+use App\Http\Controllers\RolController;
 
 
 Route::get('/', function (){
@@ -28,21 +32,19 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'isAdmin']], functio
         return view('admin.index');
     })->name('admin.dashboard');
 
-    Route::get('/vuelos', function() {
-        return view('admin.vuelos');
-    })->name('admin.vuelos');
-
-    Route::get('/reservas', function() {
-        return view('admin.index');
-    })->name('admin.reservas');
-
-
     Route::name('admin.')->group( function() {
         Route::apiResource('usuarios', UsuarioController::class);
         Route::apiResource('tripulacion', TripulacionController::class);
         Route::apiResource('aviones', AvionController::class);
+        Route::apiResource('vuelos', VueloController::class);
+        Route::apiResource('reservas', ReservaController::class);
     });
 
 });
+
+//Rutas para selects, etc
+Route::get('aviones/list', [AvionController::class, 'list'])->name('admin.aviones.list');
+Route::get('estadovuelo/list', [EstadoVueloController::class, 'list'])->name('admin.estadovuelo.list');
+Route::get('roles/list', [RolController::class, 'list'])->name('admin.roles.list');
 
 require __DIR__.'/auth.php';

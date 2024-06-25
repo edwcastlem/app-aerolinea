@@ -16,12 +16,12 @@
         <!-- Listado  -->
         <div class="relative overflow-x-auto">
 
-            <button id="abrirModal" x-data="" x-on:click.prevent="$dispatch('open-modal', 'tripulacion'); $dispatch('modo-registrar')" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2">
+            <button id="abrirModal" x-data="" x-on:click.prevent="$dispatch('modo-registrar'); $dispatch('open-modal', 'popup')" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2">
                 Nuevo
             </button>
 
             <!-- Modal para crear/editar  -->
-            <x-modal name="tripulacion">
+            <x-modal name="popup">
                 @include('admin.tripulacion.popup')
             </x-modal>
 

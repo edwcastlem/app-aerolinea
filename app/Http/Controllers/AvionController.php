@@ -94,4 +94,14 @@ class AvionController extends Controller
             'success' => true
         ]);
     }
+
+    public function list()
+    {
+        $aviones = Avion::pluck('modelo', 'idAvion');
+        
+        return response()->json([
+            'success' => true,
+            'data' => $aviones
+        ]);
+    }
 }

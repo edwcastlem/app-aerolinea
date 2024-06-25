@@ -8,15 +8,15 @@
         ],
         [
             'name' => 'Gestión de vuelos',
-            'url' => route('admin.dashboard'),
+            'url' => route('admin.vuelos.index'),
             'icon' => 'fa-solid fa-plane-departure',
-            'active' => request()->routeIs('admin.vuelos')
+            'active' => request()->routeIs('admin.vuelos.index')
         ],
         [
             'name' => 'Gestión de aeronaves',
             'url' => route('admin.aviones.index'),
             'icon' => 'fa-solid fa-plane-circle-check',
-            'active' => request()->routeIs('admin.aviones')
+            'active' => request()->routeIs('admin.aviones.index')
         ],
         [
             'name' => 'Tripulación',

@@ -16,12 +16,12 @@
         <!-- Listado de usuario -->
         <div class="relative overflow-x-auto">
 
-            <button id="abrirModal" x-data="" x-on:click.prevent="$dispatch('open-modal', 'usuario'); $dispatch('modo-registrar')" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2">
+            <button id="abrirModal" x-data="" x-on:click.prevent="$dispatch('modo-registrar'); $dispatch('open-modal', 'popup')" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2">
                 Nuevo usuario
             </button>
 
             <!-- Modal para crear/editar usuario -->
-            <x-modal name="usuario">
+            <x-modal name="popup">
                 @include('admin.usuarios.popup')
             </x-modal>
 
@@ -91,7 +91,8 @@
 
             // Configuramos el componente para fecha flatpickr y lo asignamos a una variable para usarlo despues
             let fechaNacComponent = flatpickr("#fechaNac", {
-                dateFormat: "d/m/Y"
+                dateFormat: "d/m/Y",
+                locale: 'es'
             });
 
             $(document).on('open-modal', function (event) {
@@ -104,6 +105,8 @@
                 else {
                     $('#pwd').removeClass('hidden');
                     $('#pwd_confirm').removeClass('hidden');
+                    // Cargamos el select
+                    cargarSelect('#idRol', '{{ route('admin.roles.list') }}');
                 }
             });
 
@@ -116,6 +119,7 @@
                 { data: 'dni' },
                 { data: 'telefono' },
                 { data: 'fechaNac'},
+                { data: 'idRol', visible: false},
                 { data: 'rol' },
             ]);
 
@@ -141,6 +145,10 @@
                 $('#telefono').val(fila.telefono);
                 $('#dni').val(fila.dni);
                 $('#email').val(fila.email);
+
+                // Cargamos los select y seleccionamos la opcion
+                cargarSelect('#idRol', '{{ route('admin.roles.list') }}')
+                        .then( () => $('#idRol').val(fila.idRol) );
             });
 
             //Configuramos el eliminar

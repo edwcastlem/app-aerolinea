@@ -32,6 +32,7 @@ class UsuarioController extends Controller
                     'dni' => $user->dni,
                     'telefono' => $user->telefono,
                     'fechaNac' => $user->fechaNac,
+                    'idRol' => $user->idRol,
                     'rol' => $user->rol->descripcion
                 ];
             });
@@ -73,8 +74,6 @@ class UsuarioController extends Controller
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
-        $rol = ($request->rol == "admin") ? 2 : 1;
-
         if ($validator->fails()) {
             return response()->json(['errors' => $validator->errors()], 422);
         }
@@ -85,7 +84,7 @@ class UsuarioController extends Controller
             'dni' => $request->dni,
             'fechaNac' => $request->fechaNac,
             'telefono' => $request->telefono,
-            'idRol' => $rol,
+            'idRol' => $request->idRol,
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);
@@ -130,9 +129,6 @@ class UsuarioController extends Controller
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', Rule::unique(User::class)->ignore($usuario->id)],
             //'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
-
-
-        //$rol = ($request->rol == "admin") ? 2 : 1;
 
         if ($validator->fails()) {
             return response()->json(['errors' => $validator->errors()], 422);
