@@ -27,7 +27,7 @@
     `npm install`
 
 ### 3. Correr el script de la bd
-- Ubicar el script de la base de datos en la siguiente ruta: `database\aerolinea_22062024.sql`
+- Ubicar el script de la base de datos en la siguiente ruta: `database\aerolinea_25062024.sql`
 - El script de la bd contiene la estructura de tablas necesarias por laravel más las tablas del proyecto y algunos datos insertados, debido a esto no se requiere el uso de migrations ni seeders por el momento.
 - Se debe creaer la base de datos con el nombre "aerolinea" y asegurarse que el código se ejecute con esa bd activa.
 - Se receomienda ejecutar el script desde phpmyadmin en la sección de importar.
@@ -67,5 +67,5 @@ DB_PASSWORD=
 
 ### 7. Ver la parte administrativa
 - Se puede usar estas credenciales de prueba:
-Email: `admin@admin.com`
+Email `admin@admin.com`
 Contraseña `123456789`
