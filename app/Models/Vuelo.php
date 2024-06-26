@@ -55,4 +55,25 @@ class Vuelo extends Model
 		return $this->belongsToMany(Tripulacion::class, 'tripulacionvuelo', 'idVuelo', 'idTripulacion')
 					->withPivot('idTripulacionVuelo');
 	}
+
+	// // Mutators y Accesors para el manejo de fechas al recibir del front
+	// public function setFechaSalidaAttribute($value)
+    // {
+    //     $this->attributes['fechaSalida'] = Carbon::createFromFormat('d/m/Y H:i', $value)->format('Y-m-d H:i');
+    // }
+
+    // public function getFechaSalidaAttribute($value)
+    // {
+    //     return Carbon::createFromFormat('Y-m-d H:i', $value)->format('d/m/Y H:i');
+    // }
+
+	// public function setFechaLlegadaAttribute($value)
+    // {
+    //     $this->attributes['fechaLlegada'] = Carbon::createFromFormat('d/m/Y H:i', $value)->format('Y-m-d H:i');
+    // }
+
+    // public function getFechaLlegadaAttribute($value)
+    // {
+    //     return Carbon::createFromFormat('Y-m-d H:i', $value)->format('d/m/Y H:i');
+    // }
 }

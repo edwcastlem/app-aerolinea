@@ -51,7 +51,20 @@ class VueloController extends Controller
      */
     public function store(VueloRequest $request)
     {
-        $vuelo = Vuelo::create($request->all());
+        //$vuelo = Vuelo::create($request->all());
+
+        $vuelo = new Vuelo();
+        $vuelo->nroVuelo = $request->nroVuelo;
+        $vuelo->origen = $request->origen;
+        $vuelo->destino = $request->destino;
+        $vuelo->fechaSalida = Carbon::createFromFormat('d/m/Y H:i', $request->fechaSalida);
+        $vuelo->fechaLlegada = Carbon::createFromFormat('d/m/Y H:i', $request->fechaLlegada);
+        $vuelo->precio = $request->precio;
+        $vuelo->terminal = $request->terminal;
+        $vuelo->puerta = $request->puerta;
+        $vuelo->idEstadoVuelo = $request->idEstadoVuelo;
+        $vuelo->idAvion = $request->idAvion;
+        $vuelo->save();
 
         return response()->json([
             'success' => true,
@@ -70,9 +83,25 @@ class VueloController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(VueloRequest $request, string $id)
     {
-        //
+        $vuelo = Vuelo::find($id);
+        $vuelo->nroVuelo = $request->nroVuelo;
+        $vuelo->origen = $request->origen;
+        $vuelo->destino = $request->destino;
+        $vuelo->fechaSalida = Carbon::createFromFormat('d/m/Y H:i', $request->fechaSalida);
+        $vuelo->fechaLlegada = Carbon::createFromFormat('d/m/Y H:i', $request->fechaLlegada);
+        $vuelo->precio = $request->precio;
+        $vuelo->terminal = $request->terminal;
+        $vuelo->puerta = $request->puerta;
+        $vuelo->idEstadoVuelo = $request->idEstadoVuelo;
+        $vuelo->idAvion = $request->idAvion;
+        $vuelo->save();
+
+        return response()->json([
+            'success' => true,
+            'data' => $vuelo
+        ], 201);
     }
 
     /**

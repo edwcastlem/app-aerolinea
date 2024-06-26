@@ -210,7 +210,7 @@
                 cargarSelect('#idEstadoVuelo', '{{ route('admin.estadovuelo.list') }}')
                         .then( () => $('#idEstadoVuelo').val(fila.idEstadoVuelo) );
                 
-                console.log(`Desde ShowEdit::: idAvion: ${fila.idAvion} idEstadoVuelo: ${fila.idEstadoVuelo}`)
+                //console.log(`Desde ShowEdit::: fechaSalida: ${fila.fechaSalida} desde el componente fechaSalida: ${flatpickr.formatDate(fechaSalidaComponent, "Y-m-d H:m K")}`)
             });
 
             // Configuramos el eliminar
