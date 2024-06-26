@@ -67,5 +67,5 @@ DB_PASSWORD=
 
 ### 7. Ver la parte administrativa
 - Se puede usar estas credenciales de prueba:
-Email: `admin`
+Email: `admin@admin.com`
 Contraseña `123456789`
