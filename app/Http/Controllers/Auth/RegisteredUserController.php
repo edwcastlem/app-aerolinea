@@ -33,11 +33,13 @@ class RegisteredUserController extends Controller
             'nombres' => ['required', 'string', 'max:45'],
             'apellidos' => ['required', 'string', 'max:45'],
             'dni' => ['required', 'string', 'max:8'],
-            'fechaNac' => ['required', 'string', 'max:45'],
+            'fechaNac' => ['required', 'date:Y-d-m', 'max:45'],
             'telefono' => ['required', 'string', 'max:15'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
+
+        //dd($request);
 
         $user = User::create([
             'nombres' => $request->nombres,
@@ -45,7 +47,7 @@ class RegisteredUserController extends Controller
             'dni' => $request->dni,
             'fechaNac' => $request->fechaNac,
             'telefono' => $request->telefono,
-            'idRol' => 2, //administrador
+            'idRol' => 2, // usuario normal
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);

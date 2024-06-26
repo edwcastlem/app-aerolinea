@@ -50,6 +50,9 @@
                             Fecha de Nacimiento
                         </th>
                         <th scope="col" class="px-6 py-3">
+                            Id Rol
+                        </th>
+                        <th scope="col" class="px-6 py-3">
                             Rol
                         </th>
                         <th scope="col" class="px-6 py-3">

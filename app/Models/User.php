@@ -40,7 +40,7 @@ class User extends Authenticatable
 
 	protected $casts = [
 		'email_verified_at' => 'datetime',
-		'fechaNac' => 'datetime',
+		'fechaNac' => 'date',
 		'idRol' => 'int',
 		'password' => 'hashed',
 	];
@@ -79,7 +79,7 @@ class User extends Authenticatable
 	public function setFechaNacAttribute($value)
     {
         // Convertir el formato d/m/Y a Y-m-d
-        $this->attributes['fechaNac'] = Carbon::createFromFormat('d/m/Y', $value)->format('Y-m-d');
+        $this->attributes['fechaNac'] = Carbon::createFromFormat('Y-m-d', $value);
     }
 
     public function getFechaNacAttribute($value)

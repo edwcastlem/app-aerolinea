@@ -28,8 +28,9 @@
 
 ### 3. Correr el script de la bd
 - Ubicar el script de la base de datos en la siguiente ruta: `database\aerolinea_22062024.sql`
-- En la ultima parte del archivo es la fecha del ultimo backup realizado.
 - El script de la bd contiene la estructura de tablas necesarias por laravel más las tablas del proyecto y algunos datos insertados, debido a esto no se requiere el uso de migrations ni seeders por el momento.
+- Se debe creaer la base de datos con el nombre "aerolinea" y asegurarse que el código se ejecute con esa bd activa.
+- Se receomienda ejecutar el script desde phpmyadmin en la sección de importar.
 
 ### 4. Copiar el archivo .env
 - Hacer una copia y renombrar el archivo `.env.example` a `.env` ubicado en la raiz del proyecto `app-aerolinea`.
@@ -57,11 +58,14 @@ DB_PASSWORD=
 ### 6. Correr php artisan serve y npm run dev
 - Abrir la terminal con `ctrl + ñ` y correr los siguientes comandos:
     `php artisan serve`
-    ![image](https://hackmd.io/_uploads/rJcwVs48R.png)
     
     `npm run dev`
-    ![image](https://hackmd.io/_uploads/BkcUNiVLR.png)
 
 - Cada comando debe estar en una terminal distinta y se qedan siempre abiertos mientras se ejecute la aplicacion.
 - Para entrar en la aplicacion accedemos a la ruta que nos da el primer comando:
     `http://127.0.0.1:8000` o `http://localhost:8000`
+
+### 7. Ver la parte administrativa
+- Se puede usar estas credenciales de prueba:
+Email: `admin`
+Contraseña `123456789`
