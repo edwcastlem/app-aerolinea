@@ -10,6 +10,10 @@ use App\Http\Controllers\ReservaController;
 use App\Http\Controllers\EstadoVueloController;
 use App\Http\Controllers\RolController;
 
+use App\Models\User;
+use App\Models\Vuelo;
+use App\Models\Reserva;
+
 
 Route::get('/', function (){
     return view('front.index');
@@ -29,7 +33,12 @@ Route::middleware('auth')->group(function () {
 Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'isAdmin']], function () {
     //usuario autenticado
     Route::get('/', function() {
-        return view('admin.index');
+
+        $nroUsuarios = User::count();
+        $nroVuelos = Vuelo::count();
+        $nroReservas = Reserva::count();
+
+        return view('admin.index', compact('nroUsuarios', 'nroVuelos', 'nroReservas'));
     })->name('admin.dashboard');
 
     Route::name('admin.')->group( function() {
